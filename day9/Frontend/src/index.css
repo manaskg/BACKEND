@@ -27,4 +27,17 @@ html {
     sans-serif;
 }
 
+.notes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding-block: 20px;
+  padding-inline: 20px;
+}
 
+.note {
+  color: rgb(255, 255, 255);
+  background-color: #4a4a4a;
+  padding: 20px;
+  border-radius: 10px;
+}
