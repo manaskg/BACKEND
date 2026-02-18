@@ -41,3 +41,29 @@ html {
   padding: 20px;
   border-radius: 10px;
 }
+
+.create-note-form {
+  display: flex;
+  flex-direction: column;
+  max-width: 400px;
+  gap: 20px;
+  padding: 20px;
+}
+
+.create-note-form .title {
+  padding: 10px;
+  border: none;
+  outline: none;
+}
+
+.create-note-form .description {
+  padding: 10px;
+  border: none;
+  outline: none;
+}
+
+.create-note-form .submit {
+  padding: 10px;
+  border: none;
+  outline: none;
+}
