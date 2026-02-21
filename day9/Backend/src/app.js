@@ -2,9 +2,18 @@ const express = require("express");
 const app = express();
 const noteModel = require("./models/note.model.js");
 const cors = require("cors");
+const path = require("path");
 
 app.use(express.json());
 app.use(cors());
+
+/* 
+- http://localhost:3000/assets/index-CQePoD33.js
+
+- http://localhost:3000/assets/index-B8Un6VrG.css
+
+**/
+app.use(express.static("./public"));
 
 app.post("/api/notes", async (req, res) => {
   const { title, description } = req.body;
@@ -18,6 +27,7 @@ app.post("/api/notes", async (req, res) => {
     note,
   });
 });
+
 
 app.get("/api/notes", async (req, res) => {
   const notes = await noteModel.find();
@@ -47,4 +57,10 @@ app.patch("/api/notes/:id", async (req, res) => {
     message: "note updated successfully",
   });
 });
+
+app.use("*name", (req, res) => {
+  // const filePath = path.join(__dirname, "..", "/public/index.html"
+  res.sendFile(path.join(__dirname, "..", "/public/index.html"));
+});
+
 module.exports = app;
