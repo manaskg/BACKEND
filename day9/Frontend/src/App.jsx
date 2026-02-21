@@ -6,7 +6,7 @@ const App = () => {
   const [notes, setNotes] = useState([]);
 
   function fetchNotes() {
-    axios.get("http://localhost:3000/api/notes").then((res) => {
+    axios.get("https://backend-9jn3.onrender.com/api/notes").then((res) => {
       setNotes(res.data.notes);
     });
   }
@@ -18,17 +18,21 @@ const App = () => {
 
     const newNote = { title: title.value, description: description.value };
 
-    axios.post("http://localhost:3000/api/notes", newNote).then((res) => {
-      console.log(res.data);
-      fetchNotes();
-    });
+    axios
+      .post("https://backend-9jn3.onrender.com/api/notes", newNote)
+      .then((res) => {
+        console.log(res.data);
+        fetchNotes();
+      });
   }
 
   function handleDeleteNote(noteId) {
-    axios.delete("http://localhost:3000/api/notes/" + noteId).then((res) => {
-      console.log(res.data);
-      fetchNotes();
-    });
+    axios
+      .delete("https://backend-9jn3.onrender.com/api/notes/" + noteId)
+      .then((res) => {
+        console.log(res.data);
+        fetchNotes();
+      });
   }
 
   useEffect(() => {

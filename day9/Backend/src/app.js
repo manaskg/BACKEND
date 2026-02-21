@@ -58,8 +58,11 @@ app.patch("/api/notes/:id", async (req, res) => {
   });
 });
 
+/**
+ * wildcard api
+ */
 app.use("*name", (req, res) => {
-  // const filePath = path.join(__dirname, "..", "/public/index.html"
+  
   res.sendFile(path.join(__dirname, "..", "/public/index.html"));
 });
 
