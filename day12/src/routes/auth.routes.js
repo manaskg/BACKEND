@@ -35,4 +35,12 @@ authRouter.post("/register", async (req, res) => {
   });
 });
 
+authRouter.get("/protected", (req, res) => {
+  console.log(req.cookies);
+
+  res.status(200).json({
+    message: "here is your cookies",
+  });
+});
+
 module.exports = authRouter;
