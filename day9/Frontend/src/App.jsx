@@ -35,6 +35,17 @@ const App = () => {
       });
   }
 
+  function handleUpdateNote(noteId) {
+    let description = prompt("enter new description", 0);
+    const updatedNote = { description: description };
+    axios
+      .patch("https://backend-9jn3.onrender.com/notes/" + noteId, updatedNote)
+      .then((res) => {
+        console.log(res.data);
+        fetchNotes();
+      });
+  }
+
   useEffect(() => {
     fetchNotes();
   }, []);
@@ -66,6 +77,13 @@ const App = () => {
                 }}
               >
                 delete
+              </button>
+              <button
+                onClick={() => {
+                  handleUpdateNote(note._id);
+                }}
+              >
+                update
               </button>
             </div>
           );
