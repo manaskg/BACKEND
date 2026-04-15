@@ -14,6 +14,17 @@ postRouter.post(
   postController.createPostController,
 );
 
-postRouter.get("/", postController.getPostController)
+/**
+ * GET: api/posts/
+ */
+
+postRouter.get("/", postController.getPostController);
+
+/**
+ * GET: api/posts/details/:postid
+ * - return the detail about specific post with the id. also check whether the post belong to the user that the request come from
+ */
+
+postRouter.get("/details/:postId", postController.getPostDetailsController);
 
 module.exports = postRouter;
