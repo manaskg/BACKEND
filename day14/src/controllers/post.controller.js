@@ -2,6 +2,7 @@ const postModel = require("../models/post.model.js");
 const ImageKit = require("@imagekit/nodejs");
 const { toFile } = require("@imagekit/nodejs");
 const jwt = require("jsonwebtoken");
+const { post } = require("../app.js");
 
 const imagekit = new ImageKit({
   privateKey: process.env.IMAGEKIT_PRIVATE_KEY,
@@ -49,4 +50,31 @@ async function createPostController(req, res) {
   });
 }
 
-module.exports = { createPostController };
+async function getPostController(req, res) {
+  const token = req.cookies.token;
+  if (!token) {
+    return res.status(401).json({
+      message: "user is not authorized",
+    });
+  }
+
+  let decoded = null;
+  try {
+    decoded = jwt.verify(token, process.env.JWT_SECRET);
+  } catch (error) {
+    return res.status(401).json({
+      message: "Invalid token, Unauthorized user",
+    });
+  }
+
+  const posts = await postModel.find({
+    user: decoded.id,
+  });
+
+  res.status(200).json({
+    message: "Posts fetched successfully",
+    posts,
+  });
+}
+
+module.exports = { createPostController, getPostController };
