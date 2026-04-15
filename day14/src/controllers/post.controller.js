@@ -22,7 +22,7 @@ async function createPostController(req, res) {
   let decoded = null;
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    decoded = jwt.verify(token, process.env.JWT_SECRET);
   } catch (error) {
     return res.status(401).json({
       message: "Invalid token, Unauthorized user",
@@ -45,6 +45,7 @@ async function createPostController(req, res) {
 
   res.status(201).json({
     message: "post created successfully",
+    post: post,
   });
 }
 
