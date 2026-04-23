@@ -6,7 +6,7 @@ const userRouter = express.Router();
 
 /**
  * @route POST /api/users/follow/:username
- * @description follow a user
+ * @description Send a follow request (creates pending follow)
  * @access Private
  */
 
@@ -18,7 +18,7 @@ userRouter.post(
 
 /**
  * @route POST /api/users/unfollow/:username
- * @description unfollow a user
+ * @description Unfollow a user (delete accepted follow)
  * @access Private
  */
 
@@ -27,5 +27,12 @@ userRouter.post(
   identifyUser,
   userController.unfollowUserController,
 );
+
+userRouter.get("/follow-requests/sent", identifyUser, userController.getSentFollowRequests)
+
+userRouter.get('/follow-requests/received', identifyUser, userController.getReceivedFollowRequests)
+
+userRouter.patch('/follow-requests/:')
+
 
 module.exports = userRouter;
