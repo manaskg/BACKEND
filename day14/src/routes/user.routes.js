@@ -28,11 +28,20 @@ userRouter.post(
   userController.unfollowUserController,
 );
 
-userRouter.get("/follow-requests/sent", identifyUser, userController.getSentFollowRequests)
+userRouter.get(
+  "/follow-requests/sent",
+  identifyUser,
+  userController.getSentFollowRequests,
+);
 
-userRouter.get('/follow-requests/received', identifyUser, userController.getReceivedFollowRequests)
+userRouter.get(
+  "/follow-requests/received",
+  identifyUser,
+  userController.getReceivedFollowRequests,
+);
 
-userRouter.patch('/follow-requests/:')
+userRouter.patch("/follow-requests/:followId/accept");
 
+userRouter.patch("/follow-requests/:followId/reject");
 
 module.exports = userRouter;
