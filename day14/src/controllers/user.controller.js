@@ -65,4 +65,40 @@ async function unfollowUserController(req, res) {
   });
 }
 
+async function acceptFollowRequest(req, res) {
+  try {
+    const followId = req.params.followId;
+    const followingUsername = req.user.username;
+
+    const followRequest = await followModel.findById(followId);
+
+    if (!followRequest) {
+      return res.status(404).json({
+        message: "Follow request not found",
+      });
+    }
+
+    // Verify that the current user is the one receiving the request
+    if (followRequest.following !== followingUsername) {
+      return res.status(403).json({
+        message: "You can only accept follow requests sent to you",
+      });
+    }
+
+    // Update status to accepted
+    followRequest.status = "accepted";
+    await followRequest.save();
+
+    res.status(200).json({
+      message: `You accepted follow request from ${followRequest.follower}`,
+      follow: followRequest,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error accepting follow request",
+      error: error.message,
+    });
+  }
+}
+
 module.exports = { followUserController, unfollowUserController };
