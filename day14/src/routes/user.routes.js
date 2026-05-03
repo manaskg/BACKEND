@@ -40,8 +40,16 @@ userRouter.get(
   userController.getReceivedFollowRequests,
 );
 
-userRouter.patch("/follow-requests/:followId/accept");
+userRouter.patch(
+  "/follow-requests/accept/:followerUsername",
+  identifyUser,
+  userController.acceptFollowRequests,
+);
 
-userRouter.patch("/follow-requests/:followId/reject");
+userRouter.patch(
+  "/follow-requests/reject/:followerUsername",
+  identifyUser,
+  userController.rejectFollowRequest,
+);
 
 module.exports = userRouter;
