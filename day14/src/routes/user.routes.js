@@ -49,7 +49,7 @@ userRouter.patch(
 userRouter.patch(
   "/follow-requests/reject/:followerUsername",
   identifyUser,
-  userController.rejectFollowRequest,
+  userController.rejectFollowRequests,
 );
 
 module.exports = userRouter;

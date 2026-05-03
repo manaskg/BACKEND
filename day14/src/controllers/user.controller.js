@@ -130,8 +130,8 @@ async function acceptFollowRequests(req, res) {
     });
   }
 
-  followModel.status = "accepted";
-  await followModel.save();
+  followRecord.status = "accepted";
+  await followRecord.save();
 
   res.status(200).json({
     message: `You accepted follow request from ${follower}`,
@@ -155,8 +155,8 @@ async function rejectFollowRequests(req, res) {
     });
   }
 
-  followModel.status = "rejected";
-  await followModel.save();
+  followRecord.status = "rejected";
+  await followRecord.save();
 
   res.status(200).json({
     message: `You rejected follow request from ${follower}`,
