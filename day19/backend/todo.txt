@@ -1,0 +1,365 @@
+status: {
+      type: String,
+      default: "pending",
+      enum: {
+        values: ["pending", "accepted", "rejected"],
+        message: "status should be either pending, accepted or rejected",
+      },
+    },
+  
+
+Routes
+
+1. POST /api/users/follow/:username
+    send a follow request pending
+
+2. POST /api/users/unfollow/:username
+    delete accepted follow
+
+3. GET /api/users/follow-requests/sent
+    Get all pending follow requests sent by user
+
+4. GET /api/users/follow-requests/received
+    Get all pending follow requests received by user
+
+5. PATCH /api/users/follow-requests/:followId/accept
+    Accept a pending follow request
+
+6. PATCH /api/users/follow-requests/:followId/reject
+    Reject a pending follow request
+
+Controllers
+
+1. // Send a follow request (status: pending)
+1.1 // Check if already following or pending
+1.2 // Create follow request with status: pending
+
+2. // Unfollow a user (delete accepted follow relationship)
+2.1  // check the followrecord if a accepted follow record is present
+2.2  // delete the follow record
+
+3. // Get all pending follow requests SENT by user and counts
+
+4. // Get all pending follow requests RECEIVED by user and counts
+
+5. // Accept a follow request
+5.1 // if a pending request is present 
+5.2 // Verify that the current user is the one receiving the request
+5.3 // Update status to accepted
+
+6. // Reject a follow request
+6.1 // if a pending request is present 
+6.2 // Verify that the current user is the one receiving the request
+6.3 // Update status to rejected
+
+/*
+* ROUTES
+*/
+
+const express = require("express");
+const userController = require("../controllers/user.controller.js");
+const identifyUser = require("../middlewares/auth.middleware.js");
+
+const userRouter = express.Router();
+
+/**
+ * @route POST /api/users/follow/:username
+ * @description Send a follow request (creates pending follow)
+ * @access Private
+ */
+userRouter.post(
+  "/follow/:username",
+  identifyUser,
+  userController.followUserController,
+);
+
+/**
+ * @route POST /api/users/unfollow/:username
+ * @description Unfollow a user (delete accepted follow)
+ * @access Private
+ */
+userRouter.post(
+  "/unfollow/:username",
+  identifyUser,
+  userController.unfollowUserController,
+);
+
+/**
+ * @route GET /api/users/follow-requests/sent
+ * @description Get all pending follow requests sent by user
+ * @access Private
+ */
+userRouter.get(
+  "/follow-requests/sent",
+  identifyUser,
+  userController.getSentFollowRequests,
+);
+
+/**
+ * @route GET /api/users/follow-requests/received
+ * @description Get all pending follow requests received by user
+ * @access Private
+ */
+userRouter.get(
+  "/follow-requests/received",
+  identifyUser,
+  userController.getReceivedFollowRequests,
+);
+
+/**
+ * @route PATCH /api/users/follow-requests/:followId/accept
+ * @description Accept a pending follow request
+ * @access Private
+ */
+userRouter.patch(
+  "/follow-requests/:followId/accept",
+  identifyUser,
+  userController.acceptFollowRequest,
+);
+
+/**
+ * @route PATCH /api/users/follow-requests/:followId/reject
+ * @description Reject a pending follow request
+ * @access Private
+ */
+userRouter.patch(
+  "/follow-requests/:followId/reject",
+  identifyUser,
+  userController.rejectFollowRequest,
+);
+
+module.exports = userRouter;
+
+
+/*
+* CONTROLLER
+*/
+
+const followModel = require("../models/follow.model.js");
+const userModel = require("../models/user.model.js");
+
+// Send a follow request (status: pending)
+async function followUserController(req, res) {
+  try {
+    const followerUsername = req.user.username;
+    const followingUsername = req.params.username;
+
+    // Check if user exists
+    const isUserExists = await userModel.findOne({
+      username: followingUsername,
+    });
+
+    if (!isUserExists) {
+      return res.status(404).json({
+        message: "User you are trying to follow does not exists",
+      });
+    }
+
+    // Cannot follow yourself
+    if (followerUsername === followingUsername) {
+      return res.status(400).json({
+        message: "You cannot follow yourself",
+      });
+    }
+
+    // Check if already following or pending
+    const isAlreadyFollowing = await followModel.findOne({
+      follower: followerUsername,
+      following: followingUsername,
+    });
+
+    if (isAlreadyFollowing) {
+      if (isAlreadyFollowing.status === "pending") {
+        return res.status(200).json({
+          message: "You have already sent a follow request to this user",
+          status: "pending",
+        });
+      } else if (isAlreadyFollowing.status === "accepted") {
+        return res.status(200).json({
+          message: "You are already following this user",
+          status: "accepted",
+        });
+      }
+    }
+
+    // Create follow request with status: pending
+    const followRecord = await followModel.create({
+      follower: followerUsername,
+      following: followingUsername,
+      status: "pending",
+    });
+
+    res.status(201).json({
+      message: `Follow request sent to ${followingUsername}`,
+      follow: followRecord,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error sending follow request",
+      error: error.message,
+    });
+  }
+}
+
+// Unfollow a user (delete accepted follow relationship)
+async function unfollowUserController(req, res) {
+  try {
+    const followerUsername = req.user.username;
+    const followingUsername = req.params.username;
+
+    const followRecord = await followModel.findOne({
+      follower: followerUsername,
+      following: followingUsername,
+      status: "accepted",
+    });
+
+    if (!followRecord) {
+      return res.status(400).json({
+        message: `You are not following ${followingUsername}`,
+      });
+    }
+
+    await followModel.findByIdAndDelete(followRecord._id);
+
+    res.status(200).json({
+      message: `You have unfollowed ${followingUsername}`,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error unfollowing user",
+      error: error.message,
+    });
+  }
+}
+
+// Get all pending follow requests SENT by user
+async function getSentFollowRequests(req, res) {
+  try {
+    const followerUsername = req.user.username;
+
+    const sentRequests = await followModel
+      .find({
+        follower: followerUsername,
+        status: "pending",
+      })
+      .select("following status createdAt");
+
+    res.status(200).json({
+      message: "Sent follow requests",
+      count: sentRequests.length,
+      requests: sentRequests,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error fetching sent requests",
+      error: error.message,
+    });
+  }
+}
+
+// Get all pending follow requests RECEIVED by user
+async function getReceivedFollowRequests(req, res) {
+  try {
+    const followingUsername = req.user.username;
+
+    const receivedRequests = await followModel
+      .find({
+        following: followingUsername,
+        status: "pending",
+      })
+      .select("_id follower status createdAt");
+
+    res.status(200).json({
+      message: "Received follow requests",
+      count: receivedRequests.length,
+      requests: receivedRequests,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error fetching received requests",
+      error: error.message,
+    });
+  }
+}
+
+// Accept a follow request
+async function acceptFollowRequest(req, res) {
+  try {
+    const followId = req.params.followId;
+    const followingUsername = req.user.username;
+
+    const followRequest = await followModel.findById(followId);
+
+    if (!followRequest) {
+      return res.status(404).json({
+        message: "Follow request not found",
+      });
+    }
+
+    // Verify that the current user is the one receiving the request
+    if (followRequest.following !== followingUsername) {
+      return res.status(403).json({
+        message: "You can only accept follow requests sent to you",
+      });
+    }
+
+    // Update status to accepted
+    followRequest.status = "accepted";
+    await followRequest.save();
+
+    res.status(200).json({
+      message: `You accepted follow request from ${followRequest.follower}`,
+      follow: followRequest,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error accepting follow request",
+      error: error.message,
+    });
+  }
+}
+
+// Reject a follow request
+async function rejectFollowRequest(req, res) {
+  try {
+    const followId = req.params.followId;
+    const followingUsername = req.user.username;
+
+    const followRequest = await followModel.findById(followId);
+
+    if (!followRequest) {
+      return res.status(404).json({
+        message: "Follow request not found",
+      });
+    }
+
+    // Verify that the current user is the one receiving the request
+    if (followRequest.following !== followingUsername) {
+      return res.status(403).json({
+        message: "You can only reject follow requests sent to you",
+      });
+    }
+
+    // Update status to rejected
+    followRequest.status = "rejected";
+    await followRequest.save();
+
+    res.status(200).json({
+      message: `You rejected follow request from ${followRequest.follower}`,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error rejecting follow request",
+      error: error.message,
+    });
+  }
+}
+
+module.exports = {
+  followUserController,
+  unfollowUserController,
+  getSentFollowRequests,
+  getReceivedFollowRequests,
+  acceptFollowRequest,
+  rejectFollowRequest,
+};
