@@ -74,9 +74,13 @@ async function loginController(req, res) {
     });
   }
 
-  const token = jwt.sign({ id: user._id, username: user.username }, process.env.JWT_SECRET, {
-    expiresIn: "1d",
-  });
+  const token = jwt.sign(
+    { id: user._id, username: user.username },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: "1d",
+    },
+  );
 
   res.cookie("token", token);
 
@@ -86,6 +90,19 @@ async function loginController(req, res) {
       username: user.username,
       email: user.email,
       bio: user.bio,
+      profileImage: user.profileImage,
+    },
+  });
+}
+
+async function getMeController(req, res) {
+  const userId = req.user.id;
+  const user = await userModel.findById(userId);
+
+  res.status(200).json({
+    user: {
+      username: user.username,
+      email: user.email,
       profileImage: user.profileImage,
     },
   });
