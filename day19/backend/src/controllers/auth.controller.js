@@ -111,4 +111,5 @@ async function getMeController(req, res) {
 module.exports = {
   registerController,
   loginController,
+  getMeController,
 };
