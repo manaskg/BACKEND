@@ -1,16 +1,11 @@
-import { Link } from "react-router";
+import React from "react";
 import "../style/form.scss";
-import axios from "axios";
-import { useState } from "react";
+import { Link } from "react-router";
 
 const Register = () => {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  async function handleSubmit(e) {
+  const handleSubmit = (e) => {
     e.preventDefault();
-  }
+  };
 
   return (
     <main>
@@ -18,36 +13,27 @@ const Register = () => {
         <h1>Register</h1>
         <form onSubmit={handleSubmit}>
           <input
-            onInput={(e) => {
-              setUsername(e.target.value);
-            }}
-            type="text"
-            name="username"
-            placeholder="Enter username"
-          />
-          <input
-            onInput={(e) => {
-              setEmail(e.target.value);
-            }}
             type="text"
             name="email"
+            id="email"
             placeholder="Enter email"
           />
           <input
-            onInput={(e) => {
-              setPassword(e.target.value);
-            }}
+            type="text"
+            name="username"
+            id="username"
+            placeholder="Enter username"
+          />
+          <input
             type="text"
             name="password"
+            id="password"
             placeholder="Enter password"
           />
-          <button>Submit</button>
+          <button className="button primary-button">Register</button>
         </form>
         <p>
-          Already have an account?{" "}
-          <Link className="toggleAuthForm" to="/login">
-            Login
-          </Link>
+          Already have an account? <Link to={"/login"}>Login</Link>
         </p>
       </div>
     </main>

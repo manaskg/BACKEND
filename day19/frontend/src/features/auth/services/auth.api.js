@@ -5,38 +5,17 @@ const api = axios.create({
   withCredentials: true,
 });
 
-export async function register(username, email, password) {
-  try {
-    const response = await api.post("/register", {
-      username,
-      email,
-      password,
-    });
-
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
+export async function login(username, password) {
+  const response = await api.post("/login", { username, password });
+  return response.data;
 }
 
-export async function login(username, password) {
-  try {
-    const response = await api.post("/login", {
-      username,
-      password,
-    });
-
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
+export async function register(email, username, password) {
+  const response = await api.post("/register", { email, username, password });
+  return response.data;
 }
 
 export async function getMe() {
-  try {
-    const response = await api.get("/get-me");
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
+  const response = await api.get("/get-me");
+  return response.data;
 }

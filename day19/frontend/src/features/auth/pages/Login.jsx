@@ -1,27 +1,29 @@
 import "../style/form.scss";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { useAuth } from "../hooks/useAuth";
 import { useState } from "react";
-import { useAuth } from "../hooks/useAuth.js";
-import { useNavigate } from "react-router";
 
 const Login = () => {
+  const { user, loading, handleLogin } = useAuth();
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const { handleLogin, loading } = useAuth();
   const navigate = useNavigate();
 
-  if (loading) {
-    return <h1>Loading...</h1>;
-  }
-
-  async function handleSubmit(e) {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    await handleLogin(username, password);
+    console.log("user loggedin");
+    navigate("/");
+  };
 
-    handleLogin(username, password).then((res) => {
-      console.log(res);
-      navigate("/");
-    });
+  if (loading) {
+    return (
+      <main>
+        <h1>Loading...</h1>
+      </main>
+    );
   }
 
   return (
@@ -30,29 +32,27 @@ const Login = () => {
         <h1>Login</h1>
         <form onSubmit={handleSubmit}>
           <input
+            type="text"
+            name="username"
+            id="username"
+            placeholder="Enter username"
             onInput={(e) => {
               setUsername(e.target.value);
             }}
-            type="text"
-            name="username"
-            placeholder="Enter username"
           />
           <input
+            type="text"
+            name="password"
+            id="password"
+            placeholder="Enter password"
             onInput={(e) => {
               setPassword(e.target.value);
             }}
-            type="text"
-            name="password"
-            placeholder="Enter password"
           />
-          <button>Submit</button>
+          <button className="button primary-button">Login</button>
         </form>
-
         <p>
-          Don't have an account?{" "}
-          <Link className="toggleAuthForm" to="/register">
-            Register
-          </Link>
+          Don't have an account? <Link to={"/register"}>Register</Link>
         </p>
       </div>
     </main>

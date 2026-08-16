@@ -1,12 +1,12 @@
-import { RouterProvider } from "react-router-dom";
-import AppRoutes from "./AppRoutes.jsx";
-import "./style.scss";
+import { RouterProvider } from "react-router";
+import { router } from "./app.routes.jsx";
+import "./features/shared/global.scss";
 import { AuthProvider } from "./features/auth/auth.context.jsx";
 
 function App() {
   return (
     <AuthProvider>
-      <AppRoutes />
+      <RouterProvider router={router} />;
     </AuthProvider>
   );
 }
