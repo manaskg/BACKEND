@@ -14,6 +14,7 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: [true, "Password is required"],
+    select: false, //this is used to not bring up pasword anyhow in the frontend. basically after it mongoose stops to read password
   },
   bio: String,
   profileImage: {

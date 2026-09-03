@@ -92,9 +92,19 @@ async function likePostController(req, res) {
   });
 }
 
+async function getFeedController(req, res) {
+  const posts = await postModel.find().populate("user"); // used to bring up data by the id of the referenced object.
+
+  res.status(200).json({
+    message: "posts fetched successfully",
+    posts,
+  });
+}
+
 module.exports = {
   createPostController,
   getPostController,
   getPostDetailsController,
   likePostController,
+  getFeedController,
 };
