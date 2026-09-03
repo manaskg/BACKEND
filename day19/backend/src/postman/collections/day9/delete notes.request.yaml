@@ -1,0 +1,5 @@
+$kind: http-request
+url: http://localhost:3000/api/notes/699354ab13c83614240e393b
+method: DELETE
+settings: {}
+order: 3000

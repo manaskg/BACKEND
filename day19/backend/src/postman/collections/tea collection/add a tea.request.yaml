@@ -1,0 +1,150 @@
+$kind: http-request
+description: |-
+  ## Endpoint Description
+
+  This API endpoint allows you to create a new tea entry by sending a POST request to `{{mytea}}/teas`.
+
+  ## Request Body
+
+  The request body must be formatted in JSON and should contain the following fields:
+
+  - **name** (string, required): The name of the tea. This field should contain the name of the tea you wish to add.
+      
+  - **price** (string, required): The price of the tea. This should be formatted as a string representing the price value (e.g., "30 rupees").
+      
+
+  ### Example Request Body
+
+  ``` json
+  {
+    "name": "kadak tea",
+    "price": "30 rupees"
+  }
+
+   ```
+
+  ## Response Format
+
+  Upon a successful request, the API will return a response with the following structure:
+
+  - **status** (integer): HTTP status code indicating the result of the request. Common status codes include:
+      
+      - `201 Created`: Indicates that the tea was successfully created.
+          
+      - `400 Bad Request`: Indicates that the request was malformed or missing required fields.
+          
+  - **data** (object): Contains the details of the created tea entry. The structure may include:
+      
+      - **id** (string): Unique identifier for the newly created tea.
+          
+      - **name** (string): The name of the tea.
+          
+      - **price** (string): The price of the tea.
+          
+
+  ### Example Response
+
+  ``` json
+  {
+    "status": 201,
+    "data": {
+      "id": "12345",
+      "name": "kadak tea",
+      "price": "30 rupees"
+    }
+  }
+
+   ```
+
+  Ensure that the request body adheres to the specified structure and data types to avoid errors and receive the expected response.
+url: "{{mytea}}/teas"
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"name\": \"{{$randomFullName}}\",\r
+
+    \    \"price\": \"{{$randomPrice}}\"\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Response status code is 201 when tea is successfully created\", function () {\r
+
+      \    pm.expect(pm.response.status).to.equal(201);\r
+
+      });\r
+
+      \r
+
+      \r
+
+      pm.test(\"Response has a data object containing the tea entry\", function () {\r
+
+      \    const responseData = pm.response.json();\r
+
+      \r
+
+      \    pm.expect(responseData).to.be.an('object');\r
+
+      \    pm.expect(responseData).to.have.property('data').that.is.an('object').that.is.not.empty;\r
+
+      });\r
+
+      \r
+
+      \r
+
+      pm.test(\"Response time is less than 200ms\", function () {\r
+
+      \    pm.expect(pm.response.responseTime).to.be.below(200);\r
+
+      });\r
+
+      \r
+
+      \r
+
+      pm.test(\"Name is a non-empty string\", function () {\r
+
+      \    const responseData = pm.response.json();\r
+
+      \    \r
+
+      \    pm.expect(responseData).to.be.an('object');\r
+
+      \    pm.expect(responseData.data).to.exist;\r
+
+      \    pm.expect(responseData.data.name).to.exist.and.to.be.a('string').and.to.have.lengthOf.at.least(1, \"Name should not be empty\");\r
+
+      });\r
+
+      \r
+
+      \r
+
+      pm.test(\"Price is a valid string format representing a monetary value\", function () {\r
+
+      \    const responseData = pm.response.json();\r
+
+      \    \r
+
+      \    pm.expect(responseData).to.be.an('object');\r
+
+      \    pm.expect(responseData.data).to.exist.and.to.be.an('object');\r
+
+      \    \r
+
+      \    const price = responseData.data.price;\r
+
+      \    pm.expect(price).to.exist;\r
+
+      \    pm.expect(price).to.be.a('string');\r
+
+      \    pm.expect(price).to.match(/^\\d+\\s+\\w+$/); // Matches pattern like \"30 rupees\"\r
+
+      });\r\n"
+    language: text/javascript
+settings: {}
+order: 1000

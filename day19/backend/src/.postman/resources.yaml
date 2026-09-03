@@ -1,0 +1,12 @@
+workspace:
+  id: d5964586-2f52-4fe4-8728-db59f5ceedd8
+cloudResources:
+  collections:
+    ../postman/collections/insta-project: 46784630-e7f01b69-0d15-4dd7-83d8-5ae22b764b05
+    ../postman/collections/day12: 46784630-77873ea3-c2d9-400c-940d-e1e19ce62a2e
+    ../postman/collections/day9: 46784630-e9c7ceb8-76d8-4f27-9312-d98f27251aa2
+    ../postman/collections/day5: 46784630-909ec209-d87c-4141-b467-19dbf9a24641
+    ../postman/collections/CodeReviewer: 46784630-9d1e8485-85e6-4f0d-b93d-9f30225a1cee
+    ../postman/collections/vidtube: 46784630-3050f6b5-02a3-49a5-b2fc-f7207fb19cdd
+    ../postman/collections/basecampy: 46784630-014ba214-5eff-4c6d-ba11-b958e85be5a4
+    ../postman/collections/tea collection: 46784630-0232334b-3794-4234-9625-eea96c2dbbd2

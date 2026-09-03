@@ -1,0 +1,17 @@
+$kind: http-request
+name: http://localhost:3000/ai/get-review
+url: http://localhost:3000/ai/get-review
+method: POST
+queryParams:
+  - key: prompt
+    value: hello gemini
+    disabled: true
+body:
+  type: json
+  content: "{\r
+
+    \    \"code\": \"function sum() {return a+b;}\"\r
+
+    }"
+settings: {}
+order: 1000

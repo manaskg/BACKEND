@@ -1,0 +1,8 @@
+$kind: http-request
+url: "{{basecampy}}/api/v1/healthcheck/"
+method: GET
+body:
+  type: text
+  content: ""
+settings: {}
+order: 1000

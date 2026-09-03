@@ -1,0 +1,8 @@
+$kind: http-request
+url: http://localhost:3000/api/posts/like/69e1d2c9b7bcd05d1f2a6eb3
+method: POST
+body:
+  type: json
+  content: ""
+settings: {}
+order: 8000

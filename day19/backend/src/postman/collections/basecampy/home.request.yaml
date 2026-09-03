@@ -1,0 +1,11 @@
+$kind: http-request
+url: "{{basecampy}}/"
+method: GET
+headers:
+  Content-Type: ""
+  Authorization: ""
+body:
+  type: json
+  content: ""
+settings: {}
+order: 2000

@@ -1,0 +1,16 @@
+$kind: http-request
+url: "{{mytea}}/teas/2"
+method: PUT
+body:
+  type: json
+  content: "{\r
+
+    \    \"name\": \"ice tea\",\r
+
+    \    \"price\": \"250 rupees\"\r
+
+    }"
+auth:
+  type: noauth
+settings: {}
+order: 4000

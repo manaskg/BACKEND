@@ -1,0 +1,7 @@
+$kind: http-request
+url: "{{mytea}}/teas/5"
+method: DELETE
+auth:
+  type: noauth
+settings: {}
+order: 5000

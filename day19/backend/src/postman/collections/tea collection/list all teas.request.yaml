@@ -1,0 +1,7 @@
+$kind: http-request
+url: "{{mytea}}/teas"
+method: GET
+auth:
+  type: noauth
+settings: {}
+order: 2000

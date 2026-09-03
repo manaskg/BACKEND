@@ -1,0 +1,14 @@
+$kind: http-request
+url: http://localhost:3000/api/posts/
+method: GET
+body:
+  type: formdata
+  content:
+    - type: text
+      key: caption
+      value: test_caption
+    - type: file
+      key: image
+      src: /C:/Users/manas/OneDrive/Pictures/Screenshots/Screenshot 2023-07-25 111022.png
+settings: {}
+order: 4000

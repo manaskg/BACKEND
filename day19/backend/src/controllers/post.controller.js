@@ -93,7 +93,26 @@ async function likePostController(req, res) {
 }
 
 async function getFeedController(req, res) {
-  const posts = await postModel.find().populate("user"); // used to bring up data by the id of the referenced object.
+
+  const user = req.user
+
+  //populate: used to bring up data by the id of the referenced object.
+  const posts = await Promise.all(
+    (await postModel.find().populate("user").lean())
+    .map(async (post) => {
+
+
+
+      const isLiked = await likeModel.findOne({
+        user: user.username,
+        post: post._id,
+      });
+
+      post.isLiked = Boolean(isLiked);
+
+      return post;
+    }),
+  );
 
   res.status(200).json({
     message: "posts fetched successfully",

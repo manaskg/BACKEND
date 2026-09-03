@@ -46,7 +46,7 @@ postRouter.post(
 
 
 /**
- * @route POST /api/posts/feed
+ * @route GET /api/posts/feed
  * @description get all the post created in the db
  * @access private
  */

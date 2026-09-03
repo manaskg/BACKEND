@@ -1,0 +1,14 @@
+$kind: http-request
+url: http://localhost:3000/api/posts
+method: POST
+body:
+  type: formdata
+  content:
+    - type: text
+      key: caption
+      value: test_caption1
+    - type: file
+      key: image
+      src: postman-cloud:///1f1384fe-8e7c-4030-89c0-48f9954fca09
+settings: {}
+order: 3000
