@@ -92,16 +92,45 @@ async function likePostController(req, res) {
   });
 }
 
+async function unLikePostController(req, res) {
+  const postId = req.params.postId;
+  const username = req.user.username;
+
+  const isLiked = await likeModel.findOne({
+    post: postId,
+    user: username,
+  });
+
+  if (!isLiked) {
+    return res.status(400).json({
+      message: "Post didn't like",
+    });
+  }
+
+  await likeModel.findOneAndDelete({ _id: isLiked._id });
+
+  return res.status(200).json({
+    message: "post unliked successfully.",
+  });
+}
+
 async function getFeedController(req, res) {
+  const user = req.user;
 
-  const user = req.user
+  //1. populate: used to bring up data by the id of the referenced object.
 
-  //populate: used to bring up data by the id of the referenced object.
+  // we tried to sort the posts in the feed to get recent post at top.
+  //problem is we did not have createdAt in the schema. so we cant sort using cratedAt
+  //fix is: object_id in mongoose is made with such a way that it also use date n time to make it self unique.
+  // so we can sort object_id also to make posts sorted
+  // use this line : (await postModel.find().sort({_id:-1}).populate("user")......)
+  //this is the solution if we want to do it from backend
+
   const posts = await Promise.all(
-    (await postModel.find().populate("user").lean())
-    .map(async (post) => {
-
-
+    (await postModel.find().populate("user").lean()).map(async (post) => {
+      /**
+       * typeof post => object
+       */
 
       const isLiked = await likeModel.findOne({
         user: user.username,
@@ -126,4 +155,5 @@ module.exports = {
   getPostDetailsController,
   likePostController,
   getFeedController,
+  unLikePostController
 };

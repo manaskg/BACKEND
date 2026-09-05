@@ -44,6 +44,15 @@ postRouter.post(
   postController.likePostController,
 );
 
+/**
+ * POST: api/posts/unlike/:postId
+ */
+
+postRouter.post(
+  "/unlike/:postId",
+  identifyUser,
+  postController.unLikePostController,
+);
 
 /**
  * @route GET /api/posts/feed
@@ -51,16 +60,6 @@ postRouter.post(
  * @access private
  */
 
-postRouter.get('/feed', identifyUser, postController.getFeedController)
-
-
-
-
-
-
-
-
-
-
+postRouter.get("/feed", identifyUser, postController.getFeedController);
 
 module.exports = postRouter;
