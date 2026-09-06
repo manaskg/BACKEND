@@ -61,4 +61,6 @@ userRouter.get("/followers", identifyUser, userController.getFollowers);
 
 userRouter.get("/followings", identifyUser, userController.getFollowings);
 
+userRouter.get("/suggestions", identifyUser, userController.getSuggestions);
+
 module.exports = userRouter;

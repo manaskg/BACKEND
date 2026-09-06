@@ -17,12 +17,15 @@ const Feed = () => {
     followingList,
     followingCount,
     handleGetFollowings,
+    suggestionsList,
+    handleGetSuggestions,
   } = useFollow();
 
   useEffect(() => {
     handleGetFeed();
     handleGetFollowers();
     handleGetFollowings();
+    handleGetSuggestions();
   }, []);
 
   if (loading || !feed) {
@@ -33,9 +36,10 @@ const Feed = () => {
     );
   }
 
-  console.log(feed);
-  console.log(followList);
-  console.log('following list',followingList);
+  // console.log(feed);
+  // console.log(followList);
+  // console.log('following list',followingList);
+  console.log('suggestion List', suggestionsList)
 
 
   return (
@@ -47,6 +51,7 @@ const Feed = () => {
           followCount={count}
           followings={followingList}
           followingCount={followingCount}
+          suggestionsList = {suggestionsList}
         />
         <div className="feed">
           <div className="posts">

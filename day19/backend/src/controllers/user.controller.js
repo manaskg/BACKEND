@@ -168,17 +168,16 @@ async function rejectFollowRequests(req, res) {
 
 async function getFollowers(req, res) {
   const user = req.user.username;
-  const followers = await followModel
-    .find({
-      following: user,
-      status: "accepted",
-    });
+  const followers = await followModel.find({
+    following: user,
+    status: "accepted",
+  });
 
-  const followerUsernames = followers.map(record => record.follower);
+  const followerUsernames = followers.map((record) => record.follower);
 
   const followerProfiles = await userModel.find({
-    username: {$in: followerUsernames}
-  })
+    username: { $in: followerUsernames },
+  });
 
   res.status(200).json({
     message: "followers fetched successfully",
@@ -207,6 +206,28 @@ async function getFollowings(req, res) {
   });
 }
 
+async function getSuggestions(req, res) {
+  const currentUsername = req.user.username;
+
+  const followingRecords = await followModel.find({
+    follower: currentUsername,
+  });
+
+  const followedUsernames = followingRecords.map((record) => record.following);
+
+  const excludedUsernames = [...followedUsernames, currentUsername];
+
+  const suggestions = await userModel
+    .find({ username: { $nin: excludedUsernames } })
+    .select("username profileImage")
+    .limit(10);
+
+    return res.status(200).json({
+      message: 'suggestions fetched successfully',
+      suggestions
+    })
+}
+
 module.exports = {
   followUserController,
   unfollowUserController,
@@ -215,5 +236,6 @@ module.exports = {
   acceptFollowRequests,
   rejectFollowRequests,
   getFollowers,
-  getFollowings
+  getFollowings,
+  getSuggestions
 };

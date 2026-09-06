@@ -14,3 +14,8 @@ export async function getfollowings() {
   const response = await api.get("/api/users/followings");
   return response.data;
 }
+
+export async function getSuggestions() {
+  const response = await api.get("/api/users/suggestions");
+  return response.data;
+}
