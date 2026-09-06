@@ -158,9 +158,32 @@ async function rejectFollowRequests(req, res) {
   followRecord.status = "rejected";
   await followRecord.save();
 
+  await followModel.findOneAndDelete(followRecord);
+
   res.status(200).json({
     message: `You rejected follow request from ${follower}`,
     follow: followModel,
+  });
+}
+
+async function getFollowers(req, res) {
+  const user = req.user.username;
+  const followers = await followModel
+    .find({
+      following: user,
+      status: "accepted",
+    });
+
+  const followerUsernames = followers.map(record => record.follower);
+
+  const followerProfiles = await userModel.find({
+    username: {$in: followerUsernames}
+  })
+
+  res.status(200).json({
+    message: "followers fetched successfully",
+    followers: followerProfiles,
+    count: followerProfiles.length,
   });
 }
 
@@ -171,4 +194,5 @@ module.exports = {
   getReceivedFollowRequests,
   acceptFollowRequests,
   rejectFollowRequests,
+  getFollowers,
 };

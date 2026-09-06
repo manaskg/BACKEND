@@ -52,4 +52,10 @@ userRouter.patch(
   userController.rejectFollowRequests,
 );
 
+userRouter.get(
+  "/followers",
+  identifyUser,
+  userController.getFollowers,
+);
+
 module.exports = userRouter;

@@ -1,5 +1,5 @@
 $kind: http-request
-url: http://localhost:3000/api/posts/like/69e1d2c9b7bcd05d1f2a6eb3
+url: http://localhost:3000/api/posts/like/6a9c1079d4f97f55bcdaa691
 method: POST
 body:
   type: json
