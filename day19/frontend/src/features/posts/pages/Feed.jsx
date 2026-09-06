@@ -9,10 +9,20 @@ import Nav from "../../shared/components/Nav.jsx";
 const Feed = () => {
   const { feed, handleGetFeed, loading, handleLike, handleUnLike } = usePost();
 
-  const { follow, followList, count, handleGetFollowers } = useFollow();
+  const {
+    follow,
+    followList,
+    count,
+    handleGetFollowers,
+    followingList,
+    followingCount,
+    handleGetFollowings,
+  } = useFollow();
+
   useEffect(() => {
     handleGetFeed();
     handleGetFollowers();
+    handleGetFollowings();
   }, []);
 
   if (loading || !feed) {
@@ -25,12 +35,19 @@ const Feed = () => {
 
   console.log(feed);
   console.log(followList);
+  console.log('following list',followingList);
+
 
   return (
     <main className="feed-page">
       <Nav />
       <section className="feed-container">
-        <Follow followers={followList} followCount={count} />
+        <Follow
+          followers={followList}
+          followCount={count}
+          followings={followingList}
+          followingCount={followingCount}
+        />
         <div className="feed">
           <div className="posts">
             {feed.map((post) => {

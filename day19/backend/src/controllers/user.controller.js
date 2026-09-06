@@ -187,6 +187,26 @@ async function getFollowers(req, res) {
   });
 }
 
+async function getFollowings(req, res) {
+  const user = req.user.username;
+  const followings = await followModel.find({
+    follower: user,
+    status: "accepted",
+  });
+
+  const followingsUsernames = followings.map((record) => record.following);
+
+  const followingProfiles = await userModel.find({
+    username: { $in: followingsUsernames },
+  });
+
+  res.status(200).json({
+    message: "followings fetched successfully",
+    followings: followingProfiles,
+    count: followingProfiles.length,
+  });
+}
+
 module.exports = {
   followUserController,
   unfollowUserController,
@@ -195,4 +215,5 @@ module.exports = {
   acceptFollowRequests,
   rejectFollowRequests,
   getFollowers,
+  getFollowings
 };

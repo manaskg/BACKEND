@@ -1,0 +1,5 @@
+$kind: http-request
+description: ""
+url: http://localhost:3000/api/users/followings
+method: GET
+order: 4445882765250304

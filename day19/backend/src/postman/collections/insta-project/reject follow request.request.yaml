@@ -1,5 +1,5 @@
 $kind: http-request
-url: http://localhost:3000/api/users/follow-requests/reject/test3
+url: http://localhost:3000/api/users/follow-requests/reject/test1
 method: PATCH
 settings: {}
 order: 12000

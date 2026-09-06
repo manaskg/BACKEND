@@ -1,5 +1,5 @@
 $kind: http-request
-url: http://localhost:3000/api/users/follow/test2
+url: http://localhost:3000/api/users/follow/test1
 method: POST
 body:
   type: json

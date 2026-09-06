@@ -52,10 +52,13 @@ userRouter.patch(
   userController.rejectFollowRequests,
 );
 
-userRouter.get(
-  "/followers",
-  identifyUser,
-  userController.getFollowers,
-);
+/**
+ * @route GET /api/users/followers
+ * @description get all followers list and count
+ */
+
+userRouter.get("/followers", identifyUser, userController.getFollowers);
+
+userRouter.get("/followings", identifyUser, userController.getFollowings);
 
 module.exports = userRouter;
