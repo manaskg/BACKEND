@@ -209,11 +209,17 @@ async function getFollowings(req, res) {
 async function getSuggestions(req, res) {
   const currentUsername = req.user.username;
 
-  const followingRecords = await followModel.find({
+
+  const activeFollowingRecords = await followModel.find({
     follower: currentUsername,
+    status: { $in: ["accepted", "pending"] },
   });
 
-  const followedUsernames = followingRecords.map((record) => record.following);
+  //these are those followrecords user either follow or their follow is in pending status.
+
+  const followedUsernames = activeFollowingRecords.map(
+    (record) => record.following,
+  );
 
   const excludedUsernames = [...followedUsernames, currentUsername];
 
@@ -222,10 +228,10 @@ async function getSuggestions(req, res) {
     .select("username profileImage")
     .limit(10);
 
-    return res.status(200).json({
-      message: 'suggestions fetched successfully',
-      suggestions
-    })
+  return res.status(200).json({
+    message: "suggestions fetched successfully",
+    suggestions,
+  });
 }
 
 module.exports = {
@@ -237,5 +243,5 @@ module.exports = {
   rejectFollowRequests,
   getFollowers,
   getFollowings,
-  getSuggestions
+  getSuggestions,
 };

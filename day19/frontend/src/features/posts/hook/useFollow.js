@@ -1,4 +1,4 @@
-import { getfollowers, getfollowings, getSuggestions } from "../services/follow.api";
+import { getfollowers, getfollowings, getSuggestions,followUser } from "../services/follow.api";
 import { useContext, useEffect } from "react";
 import { FollowContext } from "../follow.context.jsx";
 
@@ -57,6 +57,13 @@ export const useFollow = () => {
     }, []);
 
 
+    const handleFollowUser = async(user) => {
+      const data = await followUser(user);
+      await handleGetFollowings();
+      await handleGetSuggestions();
+    }
+
+
   return {
     loading,
     follow,
@@ -68,5 +75,6 @@ export const useFollow = () => {
     handleGetFollowings,
     suggestionsList,
     handleGetSuggestions,
+    handleFollowUser
   };
 };

@@ -19,3 +19,8 @@ export async function getSuggestions() {
   const response = await api.get("/api/users/suggestions");
   return response.data;
 }
+
+export async function followUser (username) {
+  const response = await api.post('/api/users/follow/' + username)
+  return response.data
+}

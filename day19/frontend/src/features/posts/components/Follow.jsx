@@ -7,9 +7,12 @@ const Follow = ({
   followings,
   followingCount,
   suggestionsList,
+  handleFollowUser,
 }) => {
   // console.log("following list", followings);
   // console.log("following count:", followingCount);
+
+
 
   return (
     <div className="follow-section">
@@ -49,7 +52,14 @@ const Follow = ({
             <div className="user-tablet">
               <img src={suggestion.profileImage} alt="" />
               <p>{suggestion.username}</p>
-              <button className="button primary-button">Follow</button>
+              <button
+                className="button primary-button"
+                onClick={() => {
+                  handleFollowUser(suggestion.username);
+                }}
+              >
+                Follow
+              </button>
             </div>
           );
         })}

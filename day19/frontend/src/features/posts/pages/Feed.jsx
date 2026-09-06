@@ -19,6 +19,7 @@ const Feed = () => {
     handleGetFollowings,
     suggestionsList,
     handleGetSuggestions,
+    handleFollowUser
   } = useFollow();
 
   useEffect(() => {
@@ -52,6 +53,7 @@ const Feed = () => {
           followings={followingList}
           followingCount={followingCount}
           suggestionsList = {suggestionsList}
+          handleFollowUser = {handleFollowUser}
         />
         <div className="feed">
           <div className="posts">
