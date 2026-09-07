@@ -24,7 +24,14 @@ const Follow = ({
             <div className="user-tablet">
               <img src={follower.profileImage} alt="" />
               <p>{follower.username}</p>
-              <button className="button primary-button">Follow back</button>
+              <button
+                className="button primary-button"
+                onClick={() => {
+                  handleFollowUser(follower.username);
+                }}
+              >
+                Follow back
+              </button>
             </div>
           );
         })}

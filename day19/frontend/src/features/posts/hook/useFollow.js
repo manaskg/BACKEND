@@ -61,6 +61,7 @@ export const useFollow = () => {
       const data = await followUser(user);
       await handleGetFollowings();
       await handleGetSuggestions();
+      await handleGetFollowers();
     }
 
 

@@ -1,5 +1,5 @@
 $kind: http-request
 description: ""
-url: ""
+url: http://localhost:3000/api/users/suggestions
 method: GET
 order: 4486353679657142
