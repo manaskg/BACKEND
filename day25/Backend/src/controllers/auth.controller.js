@@ -47,7 +47,7 @@ async function registerUser(req, res) {
 }
 
 async function loginUser(req, res) {
-  const { email, password, username } = req.body;
+  const { username, email, password } = req.body;
 
   const user = await userModel.findOne({
     $or: [{ email }, { username }],
@@ -72,8 +72,7 @@ async function loginUser(req, res) {
       id: user._id,
       username: user.username,
     },
-    process.env,
-    JWT_SECRET,
+    process.env.JWT_SECRET,
     {
       expiresIn: "3d",
     },

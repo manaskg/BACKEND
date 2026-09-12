@@ -1,5 +1,8 @@
 workspace:
   id: d5964586-2f52-4fe4-8728-db59f5ceedd8
+
+# Each entry here maps a local resource to one or more corresponding objects in Postman Cloud
+
 cloudResources:
   collections:
     ../postman/collections/insta-project: 46784630-e7f01b69-0d15-4dd7-83d8-5ae22b764b05
