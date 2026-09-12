@@ -1,5 +1,5 @@
 $kind: http-request
-url: http://localhost:3000/api/auth/login
+url: http://localhost:3000/api/auth/register
 method: POST
 body:
   type: json
@@ -7,7 +7,11 @@ body:
 
     \    \"username\": \"test1\",\r
 
+    \    \"email\": \"test1@test.com\",\r
+
     \    \"password\": \"test\"\r
 
+    \r
+
     }"
-order: 4491125246367373
+order: 1789230016317
