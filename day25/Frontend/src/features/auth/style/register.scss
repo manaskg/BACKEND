@@ -40,6 +40,20 @@
       }
     }
 
+    p {
+      text-align: center;
+      margin-top: 1rem;
+
+      a {
+        color: #007bff;
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+
     
   }
 }
