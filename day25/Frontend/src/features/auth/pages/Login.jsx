@@ -1,4 +1,5 @@
 import "../style/login.scss"
+import FormGroup from "../components/FormGroup.jsx"
 const Login = () => {
   return (
     <div>
@@ -6,14 +7,8 @@ const Login = () => {
         <div className="form-container">
           <h2>Login</h2>
           <form>
-            <div className="form-group">
-              <label htmlFor="email">Email</label>
-              <input type="email" id="email" name="email" required />
-            </div>
-            <div className="form-group">
-              <label htmlFor="password">Password</label>
-              <input type="password" id="password" name="password" required />
-            </div>
+            <FormGroup label="username" placeholder="Enter your username" />
+            <FormGroup label="password" placeholder="Enter your password" />
             <button className="button" type="submit">
               Login
             </button>
