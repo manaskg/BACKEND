@@ -8,5 +8,6 @@ const songController = require("../controllers/song.controller.js");
  */
 
 router.post("/", upload.single("song"), songController.uploadSong);
+router.get("/", songController.getSong);
 
 module.exports = router;

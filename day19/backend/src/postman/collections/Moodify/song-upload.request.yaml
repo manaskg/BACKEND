@@ -1,4 +1,18 @@
 $kind: http-request
-url: ""
-method: GET
+url: http://localhost:3000/api/songs
+method: POST
+body:
+  type: formdata
+  content:
+    - type: file
+      key: song
+      src:
+        - /C:/Users/manas/Downloads/Why This Kolaveri Di - The Soup Of Love (PenduJatt.dev).mp3
+      description: ""
+      disabled: false
+    - type: text
+      key: mood
+      value: happy
+      description: ""
+      disabled: false
 order: 4500624140846569
