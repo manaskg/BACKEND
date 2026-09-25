@@ -1,4 +1,6 @@
 $kind: http-request
-url: ""
+url: http://localhost:3000/api/songs?mood=happy
 method: GET
+queryParams:
+  mood: happy
 order: 4501563210047599
