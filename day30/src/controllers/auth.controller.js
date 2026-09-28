@@ -1,8 +1,12 @@
 export async function registerUser(req, res, next) {
-  try {
-    console.log(user)
-  } catch (err) {
-    err.status = 400;
-    next(err);
-  }
+  //   try {
+  //     console.log(user)
+  //   } catch (err) {
+  //     err.status = 400;
+  //     next(err);
+  //   }
+
+  res.status(200).json({
+    message: "user registered successfully",
+  });
 }
