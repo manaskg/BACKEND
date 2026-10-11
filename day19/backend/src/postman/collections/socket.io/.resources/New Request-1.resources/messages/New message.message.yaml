@@ -1,0 +1,11 @@
+$kind: socket.io-message
+eventName: message
+acknowledgement: false
+args:
+  - content: "{\r
+
+      \    \"data\": \"hello from postman\"\r
+
+      }"
+    contentType: json
+order: 1790792233631

@@ -1,3 +1,8 @@
 $kind: socket.io-request
 name: New Request
+description: ""
+url: localhost:3000
+events: []
+settings: {}
+messages: .resources/New Request-1.resources/messages
 order: 841408924606486
